@@ -20,7 +20,7 @@ export const Check = () => {
   const cart = useSelector((store) => store.cart.products);
   const totalPrice = useSelector((store) => store.cart.total);
   console.log(cart)
-  const fee = 10.00
+  const fee = 5.00
   // const totalPrice = cart.reduce((acc, item) => {
   //   const price = item.discount_price ? item.discount_price : item.price;
   //   return acc + price * item.quantity;
