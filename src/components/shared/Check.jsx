@@ -16,11 +16,11 @@ import { useRouter } from "next/navigation";
 
 export const Check = () => {
   const router = useRouter()
-  const [addOrder] = useAddOrderSubmitMutation()
+  const [addOrder, { isLoading }] = useAddOrderSubmitMutation()
   const cart = useSelector((store) => store.cart.products);
   const totalPrice = useSelector((store) => store.cart.total);
   console.log(cart)
-  const fee = 10.00
+  const fee = 5.00
   // const totalPrice = cart.reduce((acc, item) => {
   //   const price = item.discount_price ? item.discount_price : item.price;
   //   return acc + price * item.quantity;
@@ -204,8 +204,8 @@ export const Check = () => {
               </Form.Item>
             </div> */}
 
-            <button type="submit" className="w-full bg-black text-white py-2 cursor-pointer">
-              Pay Now
+            <button disabled={isLoading} type="submit" className="w-full bg-black text-white py-2 cursor-pointer">
+              {isLoading ? "Loading..." : "Pay Now"}
             </button>
           </Form>
         </div>

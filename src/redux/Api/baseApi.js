@@ -2,7 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 // API Base URL
-const baseUrl = "https://api.cathysjewelry.net"; // Replace with the actual base URL
+// const baseUrl = "https://api.cathysjewelry.net"; // Replace with the actual base URL
+const baseUrl = "http://10.10.20.26:3000"; // Replace with the actual base URL
 
 // Helper function to get the token
 const getToken = () => {

@@ -61,6 +61,16 @@ const useApi = baseApi.injectEndpoints({
       },
     }),
    
+    resentOtp: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/auth/resend",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+   
     resetPassword: builder.mutation({
       query: (data) => {
         return {
@@ -133,4 +143,5 @@ export const {
   useResendHitMutation,
   useGetAllUserManagementQuery,
   useSignUpMutation,
+  useResentOtpMutation
 } = useApi;

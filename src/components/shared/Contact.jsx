@@ -6,9 +6,12 @@ import { FaLocationDot } from "react-icons/fa6";
 import { useAddContactMutation } from "@/redux/Api/webmanageApi";
 import { toast } from "react-toastify";
 import { useGetProfileQuery } from "@/redux/Api/userAPi";
+import { useGetContactUsInfoQuery } from "@/redux/Api/newApi";
 const Contact = () => {
   const [addContact] = useAddContactMutation();
   const { data: profile } = useGetProfileQuery();
+  const { data: contactInfo } = useGetContactUsInfoQuery();
+
   const onFinish = async (values) => {
     const data = {
       name: values.name,
@@ -41,19 +44,19 @@ const Contact = () => {
                 <span className="mr-2">
                   <FaPhoneAlt />
                 </span>{" "}
-                (307) 555-0133
+                {contactInfo?.contactNumber}
               </p>
               <p className="flex items-center mb-2">
                 <span className="mr-2">
                   <IoMail />
                 </span>{" "}
-                debra.holt@example.com
+                {contactInfo?.email}
               </p>
               <p className="flex items-center">
                 <span className="mr-2">
                   <FaLocationDot />
                 </span>
-                2118 Thornridge Cir. Syracuse, Connecticut 35624
+                {contactInfo?.address}
               </p>
             </div>
           </div>
