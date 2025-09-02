@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import OTPInput from "react-otp-input";
-import { useVerifyOtpMutation } from "../../redux/Api/userAPi";
+import { useResentOtpMutation, useVerifyOtpMutation } from "../../redux/Api/userAPi";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -11,7 +11,7 @@ const VeryfyRegister = () => {
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
   const [verifyOtp] = useVerifyOtpMutation();
-
+  const [resentOtp, { isLoading }] = useResentOtpMutation();
   const handleVerify = async () => {
     const data = {
       otp: otp,
@@ -30,6 +30,20 @@ const VeryfyRegister = () => {
       console.log(error);
       setLoading(false);
     }
+  }
+  const handleResend = () => {
+    const data = {
+      email: localStorage.getItem("email"),
+      type: "signup"
+    };
+    resentOtp(data).unwrap()
+      .then((response) => {
+        toast.success(response.message);
+      })
+      .catch((error) => {
+        toast.error(error.data.message);
+        console.log(error);
+      })
   }
 
   return (
@@ -76,10 +90,9 @@ const VeryfyRegister = () => {
             <button
               type="link"
               className="font-semibold cursor-pointer"
-            //   loading={resendLoading} // Show loading spinner when resending
-            //   onClick={handleResend}
+              onClick={handleResend}
             >
-              Resend
+              {isLoading ? "Loading..." : "Resend"}
             </button>
           </span>
         </div>
