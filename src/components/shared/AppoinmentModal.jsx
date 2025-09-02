@@ -161,9 +161,12 @@ const TabOne = ({ setActiveTab, setAppointmentData }) => {
           disabledDate={disabledDate}
         />
         <Form onFinish={onFinish} className="md:grid grid-cols-2 gap-3 mt-11">
-          <h1 className="text-lg font-semibold pb-2 col-span-2">
+          {/* <h1 className="text-lg font-semibold pb-2 col-span-2">
             Available Time
-          </h1>
+          </h1> */}
+          <p className="text-lg font-semibold pt-2 col-span-2">
+            Office hours are available from 9 AM to 5 PM.
+          </p>
           <div>
             <h1>From</h1>
             <Form.Item
@@ -213,13 +216,18 @@ const TabTwo = ({ setActiveTab, appointmentData, setOpenResponsive }) => {
     try {
       const response = await addApointment(postData).unwrap();
       toast.success(response.message);
-    } catch (error) {
-      toast.error(error.data.message);
-    } finally {
-      setOpenResponsive(false);
       form.resetFields();
       setActiveTab(0);
-    }
+      setOpenResponsive(false);
+    } catch (error) {
+      toast.error(error.data.message);
+      setActiveTab(0)
+    } 
+    // finally {
+    //   setActiveTab(0);
+    //   setOpenResponsive(false);
+    //   form.resetFields();
+    // }
   };
   return (
     <div key="2">
