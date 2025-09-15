@@ -13,8 +13,9 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 
 const DetailsSection = ({ product }) => {
-
-  console.log('product from shop', product);
+  const products = useSelector((store) => store.cart.products);
+  console.log(products);
+  // console.log('product from shop', product);
   const [ addFavorite ] = useAddFavoriteMutation();
   const savings =
     ((product?.price - product?.discount_price) / product?.price) * 100;
