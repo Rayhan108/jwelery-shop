@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useGetProfileQuery } from "@/redux/Api/userAPi";
 import { useGetContactUsInfoQuery } from "@/redux/Api/newApi";
 const Contact = () => {
-  const [addContact] = useAddContactMutation();
+  const [addContact, { isLoading }] = useAddContactMutation();
   const { data: profile } = useGetProfileQuery();
   const { data: contactInfo } = useGetContactUsInfoQuery();
 
@@ -107,9 +107,10 @@ const Contact = () => {
 
               <button
                 type="primary"
+                disabled={isLoading}
                 className="w-full bg-black text-white py-2  cursor-pointer"
               >
-                Message Sent
+                {isLoading ? "Loading..." : "Message Sent"}
               </button>
             </Form>
           </div>
