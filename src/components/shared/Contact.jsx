@@ -7,10 +7,14 @@ import { useAddContactMutation } from "@/redux/Api/webmanageApi";
 import { toast } from "react-toastify";
 import { useGetProfileQuery } from "@/redux/Api/userAPi";
 import { useGetContactUsInfoQuery } from "@/redux/Api/newApi";
+
 const Contact = () => {
-  const [addContact] = useAddContactMutation();
+  const [addContact, { isLoading }] = useAddContactMutation();
   const { data: profile } = useGetProfileQuery();
   const { data: contactInfo } = useGetContactUsInfoQuery();
+
+  // Create a form reference
+  const [form] = Form.useForm();
 
   const onFinish = async (values) => {
     const data = {
@@ -22,6 +26,7 @@ const Contact = () => {
     try {
       const response = await addContact(data).unwrap();
       toast.success(response.message);
+      form.resetFields(); // Clear the form fields after successful submission
     } catch (error) {
       toast.error(error.data.message);
     }
@@ -62,11 +67,10 @@ const Contact = () => {
           </div>
 
           <div className="col-span-7   md:pl-6 mt-9 md:mt-0">
-            <Form onFinish={onFinish} layout="vertical">
+            <Form form={form} onFinish={onFinish} layout="vertical">
               <Form.Item
                 name="name"
                 label="Full Name"
-
               >
                 <Input
                   style={{ padding: "9px", borderRadius: "0px" }}
@@ -107,9 +111,10 @@ const Contact = () => {
 
               <button
                 type="primary"
+                disabled={isLoading}
                 className="w-full bg-black text-white py-2  cursor-pointer"
               >
-                Message Sent
+                {isLoading ? "Loading..." : "Message Sent"}
               </button>
             </Form>
           </div>

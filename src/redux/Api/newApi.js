@@ -21,10 +21,20 @@ const newApi = baseApi.injectEndpoints({
         };
       },
     }),
+    
+    getSocialLinks: builder.query({
+      query: () => {
+        return {
+          url: "/social-details",
+          method: "GET",
+        };
+      },
+    }),
 
   }),
 });
 
 export const {
     useGetContactUsInfoQuery,
+    useGetSocialLinksQuery,
 } = newApi;

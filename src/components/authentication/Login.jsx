@@ -24,8 +24,13 @@ const SignInSection = () => {
       localStorage.setItem("accessToken", response.accessToken);
       Cookies.set('jewellery-web-token', response.accessToken)
       setLoading(false)
+      const url = "/"
+      router.push(url)
 
-      router.push('/')
+      // **Force a full page reload to re-run middleware**
+      setTimeout(() => {
+        window.location.href = url; // Hard reload to trigger middleware
+      }, 500);
     } catch (error) {
       toast.error(error.data.message);
       setLoading(false)

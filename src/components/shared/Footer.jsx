@@ -1,5 +1,5 @@
-import { FaInstagram, FaPinterestP } from "react-icons/fa";
-import { RiYoutubeLine } from "react-icons/ri";
+import { FaInstagram, FaPinterestP, FaTiktok } from "react-icons/fa";
+import { RiTelegram2Fill, RiYoutubeLine } from "react-icons/ri";
 import { SlSocialFacebook } from "react-icons/sl";
 import { FaXTwitter } from "react-icons/fa6";
 import card1 from '../../../public/ring/visa.png'
@@ -10,16 +10,29 @@ import card5 from '../../../public/ring/paypal.png'
 import Image from "next/image";
 import Link from "next/link";
 import { useGetCategoryQuery } from "@/redux/Api/webmanageApi";
+import { useGetContactUsInfoQuery, useGetSocialLinksQuery } from "@/redux/Api/newApi";
 
 const Footer = () => {
-
+  const { data: contactInfo } = useGetContactUsInfoQuery();
   const { data: category } = useGetCategoryQuery();
+  const { data: social } = useGetSocialLinksQuery();
+  console.log(social);
 
   const categoryItems =
     (category?.slice(0, 5).map((cat) => ({
       title: cat?.name,
       path: `/${cat?._id}`,
     }))) || [];
+
+  const iconMapping = {
+    facebook: <SlSocialFacebook />,
+    twitter: <FaXTwitter />,
+    instagram: <FaInstagram />,
+    tiktok: <FaTiktok />,
+    youtube: <RiYoutubeLine />,
+    pinterest: <FaPinterestP />,
+    telegram: <RiTelegram2Fill />,
+  };
 
   return (
     <div className="md:mt-28 mt-16">
@@ -29,14 +42,13 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Our Address</h3>
             <p className="flex items-center mb-2">
-              <span className="mr-2">📍</span> 4517 Washington Ave. Manchester,
-              Kentucky 39495
+              <span className="mr-2">📍</span> {contactInfo?.address}
             </p>
             <p className="flex items-center mb-2">
-              <span className="mr-2">📞</span> (307) 555-0133
+              <span className="mr-2">📞</span> {contactInfo?.contactNumber}
             </p>
             <p className="flex items-center mb-2">
-              <span className="mr-2">📧</span> debra.holt@example.com
+              <span className="mr-2">📧</span> {contactInfo?.email}
             </p>
             <p className="flex items-center">
               <span className="mr-2">🌐</span> www.carthysjewelry.com
@@ -88,21 +100,16 @@ const Footer = () => {
         <div className="flex gap-5 justify-center container m-auto mt-11">
           <div className="border-b-2 border-gray-600 h-2 w-full mt-2"></div>
           <div className="flex justify-center gap-3">
-            <div className="border w-8 h-8 rounded-full flex items-center justify-center text-xl">
-              <FaInstagram />
-            </div>
-            <div className="border w-8 h-8 rounded-full flex items-center justify-center text-xl">
-              <RiYoutubeLine />
-            </div>
-            <div className="border w-8 h-8 rounded-full flex items-center justify-center text-xl">
-              <SlSocialFacebook />
-            </div>
-            <div className="border w-8 h-8 rounded-full flex items-center justify-center text-xl">
-              <FaXTwitter />
-            </div>
-            <div className="border w-8 h-8 rounded-full flex items-center justify-center text-xl">
-              <FaPinterestP />
-            </div>
+            {social?.map((socialItem) => {
+              const { platform, url } = socialItem;
+              return iconMapping[platform] ? (
+                <Link key={platform} href={`${url}`} target="_blank">
+                  <div className="border w-8 h-8 rounded-full flex items-center justify-center text-xl">
+                    {iconMapping[platform]}
+                  </div>
+                </Link>
+              ) : null;
+            })}
           </div>
           <div className="border-b-2 border-gray-600 w-full h-2 mt-2"></div>
         </div>

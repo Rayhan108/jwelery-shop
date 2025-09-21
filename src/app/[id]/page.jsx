@@ -8,7 +8,7 @@ const page = async ({ params }) => {
   return (
     <div className="container mx-auto mt-9 px-4 lg:px-0">
       <div>
-        <h1 className="pb-4">Home/{category?.name}</h1>
+        <h1 className="pb-4">{category?.name}</h1>
 
         <div
           className="relative bg-cover bg-center md:h-[55vh] h-[200px] -mt-[1px]"

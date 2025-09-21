@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 
 const OrderTable = ({ myOrder }) => {
-  console.log(myOrder);
 
   return (
     <div className="mt-6 overflow-x-auto">
@@ -25,39 +24,39 @@ const OrderTable = ({ myOrder }) => {
               </td>
               <td className="py-4 px-5 flex items-center space-x-3">
                 <Image
-                  src={order.ready_made_details.products[0].product_id.image_urls[0]}
-                  alt={order.ready_made_details.products[0].product_id.name}
+                  src={order?.ready_made_details?.products[0]?.product_id?.image_urls[0]}
+                  alt={order?.ready_made_details?.products[0]?.product_id?.name}
                   width={50}
                   height={50}
                   className="w-12 h-12 object-cover rounded-md"
                 />
                 <div>
                   <p className="font-medium">
-                    {order.ready_made_details.products[0].product_id.name}
+                    {order?.ready_made_details?.products[0]?.product_id.name}
                   </p>
                   <p className="text-gray-500 text-sm">
-                    x {order.ready_made_details.products[0].quantity}
+                    x {order?.ready_made_details?.products[0]?.quantity}
                   </p>
                 </div>
               </td>
              
               <td className="py-4 px-5 font-medium">
-                ${order.ready_made_details.products[0].product_id.price}
+                ${order?.totalPrice}
               </td>
               <td
                 className={`py-4 px-5 font-medium ${
-                  order.order_status === "Completed"
+                  order?.order_status === "Completed"
                   ? "text-green-600"
-                  : order.order_status === "Shipped"
+                  : order?.order_status === "Shipped"
                   ? "text-blue-600"
-                  : order.order_status === "Canceled"
+                  : order?.order_status === "Canceled"
                   ? "text-red-600"
-                  : order.order_status === "In Progress"
+                  : order?.order_status === "In Progress"
                   ? "text-yellow-600"
                   :'text-cyan-700'
                 }`}
               >
-                {order.order_status}
+                {order?.order_status}
               </td>
             </tr>
           ))}
