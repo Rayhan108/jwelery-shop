@@ -14,50 +14,51 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useGetReviewTotalQuery } from "@/redux/Api/webmanageApi";
 
 const DetailsDescription = ({ product, id, similarProducts }) => {
+  console.log('similar product', similarProducts);
   const { data: reviewData } = useGetReviewTotalQuery(id);
   const [activeTab, setActiveTab] = useState("description");
-  const category = [
-    {
-      img: img1,
-      title: "Willow Diamond Engagement Ring",
-      price: "$20.00",
-    },
-    {
-      img: img2,
-      title: "Willow Diamond Engagement Ring",
-      price: "$20.00",
-    },
-    {
-      img: img3,
-      title: "Willow Diamond Engagement Ring",
-      price: "$20.00",
-    },
-    {
-      img: img4,
-      title: "Willow Diamond Engagement Ring",
-      price: "$20.00",
-    },
-    {
-      img: img1,
-      title: "Willow Diamond Engagement Ring",
-      price: "$20.00",
-    },
-    {
-      img: img2,
-      title: "Willow Diamond Engagement Ring",
-      price: "$20.00",
-    },
-    {
-      img: img3,
-      title: "Willow Diamond Engagement Ring",
-      price: "$20.00",
-    },
-    {
-      img: img4,
-      title: "Willow Diamond Engagement Ring",
-      price: "$20.00",
-    },
-  ];
+  // const category = [
+  //   {
+  //     img: img1,
+  //     title: "Willow Diamond Engagement Ring",
+  //     price: "$20.00",
+  //   },
+  //   {
+  //     img: img2,
+  //     title: "Willow Diamond Engagement Ring",
+  //     price: "$20.00",
+  //   },
+  //   {
+  //     img: img3,
+  //     title: "Willow Diamond Engagement Ring",
+  //     price: "$20.00",
+  //   },
+  //   {
+  //     img: img4,
+  //     title: "Willow Diamond Engagement Ring",
+  //     price: "$20.00",
+  //   },
+  //   {
+  //     img: img1,
+  //     title: "Willow Diamond Engagement Ring",
+  //     price: "$20.00",
+  //   },
+  //   {
+  //     img: img2,
+  //     title: "Willow Diamond Engagement Ring",
+  //     price: "$20.00",
+  //   },
+  //   {
+  //     img: img3,
+  //     title: "Willow Diamond Engagement Ring",
+  //     price: "$20.00",
+  //   },
+  //   {
+  //     img: img4,
+  //     title: "Willow Diamond Engagement Ring",
+  //     price: "$20.00",
+  //   },
+  // ];
   const splideRef = useRef(null);
 
   const handlePrevClick = () => {
@@ -76,17 +77,15 @@ const DetailsDescription = ({ product, id, similarProducts }) => {
       {/* Tab Navigation */}
       <div className="flex border-b justify-center mb-8">
         <button
-          className={`px-4 py-2  text-gray-700 ${
-            activeTab === "description" ? "border-b-2 border-black " : ""
-          }`}
+          className={`px-4 py-2  text-gray-700 ${activeTab === "description" ? "border-b-2 border-black " : ""
+            }`}
           onClick={() => setActiveTab("description")}
         >
           Description
         </button>
         <button
-          className={`px-4 py-2 text-gray-700 ${
-            activeTab === "reviews" ? "border-b-2 border-black" : ""
-          }`}
+          className={`px-4 py-2 text-gray-700 ${activeTab === "reviews" ? "border-b-2 border-black" : ""
+            }`}
           onClick={() => setActiveTab("reviews")}
         >
           Reviews {reviewData?.pagination?.totalReviews || 0}
@@ -126,28 +125,26 @@ const DetailsDescription = ({ product, id, similarProducts }) => {
                 <Splide
                   ref={splideRef}
                   options={{
-                    type: "loop",
+                    type: "slide" ,
                     perPage: 5,
                     gap: "1rem",
                     arrows: false,
                     pagination: false,
                     breakpoints: {
-                      1024: { perPage: 3 },
-                      768: { perPage: 2 },
+                      1024: { perPage: Math.min(similarProducts?.length || 1, 3) },
+                      768: { perPage: Math.min(similarProducts?.length || 1, 2) },
                       640: { perPage: 1 },
                     },
                   }}
                   aria-label="Category Slide"
                 >
-                  {similarProducts?.length > 0 &&
-                    similarProducts?.map((item, index) => (
-                      <SplideSlide key={index}>
-                        <div>
-                          <CardShop item={item}></CardShop>
-                        </div>
-                      </SplideSlide>
-                    ))}
+                  {similarProducts?.map((item, index) => (
+                    <SplideSlide key={index}>
+                      <CardShop item={item} />
+                    </SplideSlide>
+                  ))}
                 </Splide>
+
               </div>
             </div>
           </div>

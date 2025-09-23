@@ -108,7 +108,7 @@ const DetailsSection = ({ product }) => {
   //     )
   //   );
   return (
-    <div>
+    <div className=" w-[300px]">
       <div>
         {product?.discount_price && (
           <button className="px-4 py-1 mt-9 lg:mt-0 border border-black rounded-full">

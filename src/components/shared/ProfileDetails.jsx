@@ -113,7 +113,7 @@ const ProfileDetails = () => {
             {profile?.shipping_address?.street_address}, {profile?.shipping_address?.city}, {profile?.shipping_address?.state}, {profile?.shipping_address?.zip_code}
           </p>
           <div>
-            <Link href={'/changeAddress'}><button className="mt-2 cursor-pointer border px-7 py-2 border-gray-400">
+            <Link href={'/changeAddress'}><button className="mt-2 cursor-pointer border px-12 py-2 border-gray-400">
               Change Address
             </button></Link>
           </div>

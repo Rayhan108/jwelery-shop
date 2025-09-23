@@ -15,6 +15,7 @@ const Page = ({ params }) => {
     const fetchProductData = async () => {
       try {
         const data = await mainUrl(`/products/${id}`);
+
         if (data?.product) {
           setProduct(data.product);
           setSimilarProducts(data.similarProducts);
@@ -34,7 +35,7 @@ const Page = ({ params }) => {
   }
 
   return (
-    <div className="container mx-auto mt-6 px-4">
+    <div className="container mx-auto mt-6 px-4 ">
       <h1 className="pb-4 text-gray-600">Home / Rings / Willow Diamond Engagement Ring</h1>
 
       <div className="lg:grid lg:grid-cols-2 gap-8">
