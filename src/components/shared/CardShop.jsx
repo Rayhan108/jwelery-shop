@@ -13,7 +13,7 @@ import { Spin, ConfigProvider } from "antd";  // Ensure Spin is properly importe
 const CardShop = ({ item }) => {
   const [addFavorite, { isLoading }] = useAddFavoriteMutation();
   // const dispatch = useDispatch();
-  console.log(item?._id);
+  console.log(item);
 
   // const increaseQuantity = () => {
   //   dispatch(
