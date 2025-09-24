@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
 "use client"
 import React from "react";
-
-
-import store from "../redux/store";
+import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from "react-redux";
+import { persistor, store } from '../redux/store';
 
-const ReduxProvider = ({children}) => {
+const ReduxProvider = ({ children }) => {
     return (
         <Provider store={store}>
-            {children}
+            <PersistGate loading={null} persistor={persistor}>
+                {children}
+            </PersistGate>
         </Provider>
     );
 };
