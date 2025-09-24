@@ -18,17 +18,17 @@ const Custom = ({ myCustomOrder }) => {
           </tr>
         </thead>
         <tbody>
-          {myCustomOrder.map((order, index) => (
+          {myCustomOrder?.map((order, index) => (
             <tr key={index} className="border-b hover:bg-gray-50">
               
               <td className="py-4 px-5">
                 {new Date(order.createdAt).toLocaleDateString()}
               </td>
-              <td className="py-4 px-5">{order.custom_order_details.jewelry_type}</td>
-              <td className="py-4 px-5 font-medium">{order.custom_order_details.description}</td>
+              <td className="py-4 px-5">{order?.custom_order_details?.jewelry_type}</td>
+              <td className="py-4 px-5 font-medium">{order?.custom_order_details?.description}</td>
               <td className="py-4 px-5 flex items-center space-x-3">
                 <Image
-                  src={order.custom_order_details.image_url}
+                  src={order?.custom_order_details?.image_url}
                   alt="Jewelry"
                   width={50}
                   height={50}
@@ -37,18 +37,18 @@ const Custom = ({ myCustomOrder }) => {
               </td>
               <td
                 className={`py-4 px-5 font-medium ${
-                  order.order_status === "Completed"
+                  order?.order_status === "Completed"
                     ? "text-green-600"
-                    : order.order_status === "Shipped"
+                    : order?.order_status === "Shipped"
                     ? "text-blue-600"
-                    : order.order_status === "Canceled"
+                    : order?.order_status === "Canceled"
                     ? "text-red-600"
-                    : order.order_status === "In Progress"
+                    : order?.order_status === "In Progress"
                     ? "text-yellow-600"
                     :'text-cyan-700'
                 }`}
               >
-                {order.order_status}
+                {order?.order_status}
               </td>
             </tr>
           ))}

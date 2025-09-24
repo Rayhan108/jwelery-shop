@@ -16,9 +16,13 @@ import { useRouter } from "next/navigation";
 import { useGetProfileQuery } from "@/redux/Api/userAPi";
 import Cookies from "js-cookie";
 import GlobalSearchModal from "./GlobalSearchModal";
+import { useSelector } from "react-redux";
 
 const Navbar = ({ pathname }) => {
   const loggin = Cookies.get('jewellery-web-token');
+
+  const cart = useSelector((state) => state.cart)
+  console.log(cart.products.length);
 
   const { data: category } = useGetCategoryQuery();
   const { data: profile } = useGetProfileQuery();
@@ -134,7 +138,7 @@ const Navbar = ({ pathname }) => {
             </div>
           </Link>
           <div className="flex -mt-8 md:mt-0 gap-4 justify-end text-lg">
-            <AiOutlineSearch size={loggin ? 20 : 26} onClick={showModal} className=" cursor-pointer" />
+            <AiOutlineSearch size={loggin ? 23 : 26} onClick={showModal} className=" cursor-pointer" />
             <GlobalSearchModal isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel}></GlobalSearchModal>
 
             {
@@ -142,7 +146,7 @@ const Navbar = ({ pathname }) => {
                 <>
                   <div className="hidden md:block">
                     <div className="flex gap-2">
-                      <AiOutlineUser className="" />
+                      <AiOutlineUser size={20} className="" />
                       <Dropdown
                         menu={{
                           items,
@@ -161,12 +165,19 @@ const Navbar = ({ pathname }) => {
                   </div>
 
                   <Link href={"/favorite"}>
-                    <LuHeart />{" "}
+                    <LuHeart size={20} />{" "}
                   </Link>
 
-                  <Link href={"/myCart"}>
-                    <IoBagHandleOutline />
+                  <Link href={"/myCart"} className="relative">
+                    <IoBagHandleOutline size={20} />
+                    {/* Display cart count only if there are items in the cart */}
+                    {cart.products.length > 0 && (
+                      <span className="absolute top-[-8px] right-[-8px] text-xs text-white bg-red-600 rounded-full px-[5px] py-[1px]">
+                        {cart.products.length}
+                      </span>
+                    )}
                   </Link>
+
                 </>
                 :
                 <>
