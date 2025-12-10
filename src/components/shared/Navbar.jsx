@@ -6,9 +6,9 @@ import { AiOutlineSearch, AiOutlineUser } from "react-icons/ai";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { LuHeart } from "react-icons/lu";
 import Link from "next/link";
-import { useGetCategoryQuery } from "@/redux/Api/webmanageApi";
+import { useGetCategoryQuery, useGetFavoritesQuery } from "@/redux/Api/webmanageApi";
 import { DownOutlined } from "@ant-design/icons";
-import { Drawer, Dropdown } from "antd";
+import { Badge, Drawer, Dropdown } from "antd";
 import { useState } from "react";
 import { HiOutlineBars3BottomRight } from "react-icons/hi2";
 import AppoinmentModal from "./AppoinmentModal";
@@ -20,7 +20,8 @@ import { useSelector } from "react-redux";
 
 const Navbar = ({ pathname }) => {
   const loggin = Cookies.get('jewellery-web-token');
-
+  const { data: favorite } = useGetFavoritesQuery();
+  console.log(favorite?.products)
   const cart = useSelector((state) => state.cart)
   console.log(cart.products.length);
 
@@ -164,9 +165,20 @@ const Navbar = ({ pathname }) => {
                     </div>
                   </div>
 
-                  <Link href={"/favorite"}>
-                    <LuHeart size={20} />{" "}
-                  </Link>
+                   <Link href="/favorite">
+      <div className="relative">
+        <Badge
+          count={favorite?.products?.length || 0}
+          overflowCount={99} 
+          className="absolute top-0 right-0"
+          style={{
+            backgroundColor: favorite?.products?.length > 0 ? 'red' : 'transparent',
+          }}
+        >
+          <LuHeart size={20} className="text-gray-800" />
+        </Badge>
+      </div>
+    </Link>
 
                   <Link href={"/myCart"} className="relative">
                     <IoBagHandleOutline size={20} />

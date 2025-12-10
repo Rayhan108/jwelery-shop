@@ -1,14 +1,7 @@
 "use client";
 import Image from "next/image";
 import hero from "../../../public/shared/sss.jpg";
-// import CardShop from "../../components/shared/CardShop";
-// import img1 from "../../../public/ring/img1.png";
-// import img2 from "../../../public/ring/img2.png";
-// import img3 from "../../../public/ring/img3.png";
-// import img4 from "../../../public/ring/img4.png";
-// import img5 from "../../../public/ring/img5.png";
-// import img6 from "../../../public/ring/img6.png";
-// import { FiHeart } from "react-icons/fi";
+
 import Link from "next/link";
 import { useAddFavoriteMutation, useGetFavoritesQuery } from "@/redux/Api/webmanageApi";
 import { toast } from "react-toastify";
