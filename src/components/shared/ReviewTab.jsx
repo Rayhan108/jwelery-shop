@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { MdStar, MdStarOutline } from "react-icons/md";
 import { Form, Input, Button, Rate, Select, Pagination } from "antd";
 import {
@@ -18,7 +18,7 @@ const ReviewTab = ({ id , product,reviewRefetch}) => {
     limit: pageSize, sort: sortOrder, rating:filterType,});
   console.log(reviewData);
   const [addReview] = useAddReviewMutation();
-
+ const formRef = useRef(null);
   const handleRatingChange = (value) => {
     setFilterType(value);
   };
@@ -43,8 +43,10 @@ const ReviewTab = ({ id , product,reviewRefetch}) => {
       toast.success(response.message);
       refetch()
       reviewRefetch()
+       formRef.current.resetFields(); 
     } catch (error) {
       toast.error(error.data.message);
+       formRef.current.resetFields(); 
     }
   };
   const averageRating =
@@ -185,7 +187,7 @@ const ReviewTab = ({ id , product,reviewRefetch}) => {
       <div className="mt-11">
         <h2 className="text-2xl font-semibold mb-4">Add a Review</h2>
 
-        <Form layout="vertical" onFinish={onFinish}>
+        <Form layout="vertical" onFinish={onFinish} ref={formRef}>
           {/* Rating */}
           <Form.Item label="Your Rating" name="rating">
             <Rate allowHalf />
