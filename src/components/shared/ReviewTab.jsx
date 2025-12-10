@@ -8,13 +8,13 @@ import {
   useGetReviewQuery,
 } from "../../redux/Api/webmanageApi";
 import { toast } from "react-toastify";
-const ReviewTab = ({ id , product}) => {
+const ReviewTab = ({ id , product,reviewRefetch}) => {
   console.log(id);
   const [sortOrder, setSortOrder] = useState("");
   const [filterType, setFilterType] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
-  const { data: reviewData } = useGetReviewQuery({id,  page: currentPage,
+  const { data: reviewData,refetch } = useGetReviewQuery({id,  page: currentPage,
     limit: pageSize, sort: sortOrder, rating:filterType,});
   console.log(reviewData);
   const [addReview] = useAddReviewMutation();
@@ -41,6 +41,8 @@ const ReviewTab = ({ id , product}) => {
     try {
       const response = await addReview(data).unwrap();
       toast.success(response.message);
+      refetch()
+      reviewRefetch()
     } catch (error) {
       toast.error(error.data.message);
     }

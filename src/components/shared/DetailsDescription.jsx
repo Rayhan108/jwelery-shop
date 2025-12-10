@@ -15,7 +15,7 @@ import { useGetReviewTotalQuery } from "@/redux/Api/webmanageApi";
 
 const DetailsDescription = ({ product, id, similarProducts }) => {
   console.log('similar product', similarProducts);
-  const { data: reviewData } = useGetReviewTotalQuery(id);
+  const { data: reviewData,refetch:reviewRefetch } = useGetReviewTotalQuery(id);
   const [activeTab, setActiveTab] = useState("description");
   // const category = [
   //   {
@@ -152,7 +152,7 @@ const DetailsDescription = ({ product, id, similarProducts }) => {
 
         {activeTab === "reviews" && (
           <div>
-            <ReviewTab id={id} product={product}></ReviewTab>
+            <ReviewTab id={id} product={product} reviewRefetch={reviewRefetch}></ReviewTab>
           </div>
         )}
       </div>
