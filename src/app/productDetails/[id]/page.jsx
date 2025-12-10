@@ -3,10 +3,10 @@ import Image from "next/image";
 import DetailsSection from "../../../components/shared/DetailsSection";
 import DetailsDescription from "../../../components/shared/DetailsDescription";
 import mainUrl from "../../../components/shared/mainUrl";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const Page = ({ params }) => {
-  const { id } = params;
+  const { id } = React.use(params);
   const [product, setProduct] = useState(null);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");

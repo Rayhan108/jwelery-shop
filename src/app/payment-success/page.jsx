@@ -3,9 +3,17 @@
 import { useRouter } from 'next/navigation';
 import { FaCheckCircle } from 'react-icons/fa';
 
-const SuccessPayment = () => {
+import { clearCart } from '../../redux/slices/cartSlice';
+import { useAppDispatch } from '../../redux/hooks';
+import { useEffect } from 'react';
 
+const SuccessPayment = () => {
+const dispatch = useAppDispatch();
     const router = useRouter();
+   useEffect(() => {
+    dispatch(clearCart());
+  }, [dispatch]);
+
     const goToOrderPage = () => {
         router.push('/myOrder');
     }

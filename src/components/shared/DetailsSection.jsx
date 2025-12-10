@@ -4,7 +4,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdStar, MdStarOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addToCartForNagivate,
+  addToCartForNavigate,
   updateColor,
   updateSize,
 } from "../../redux/slices/cartSlice";
@@ -14,7 +14,7 @@ import Link from "next/link";
 
 const DetailsSection = ({ product }) => {
   const products = useSelector((store) => store.cart.products);
-  console.log(products);
+  console.log('prod from cart',products);
   // console.log('product from shop', product);
   const [ addFavorite ] = useAddFavoriteMutation();
   const savings =
@@ -33,7 +33,7 @@ const DetailsSection = ({ product }) => {
       : 0;
 
   const dispatch = useDispatch();
-  const cart = useSelector((store) => store.cart.products).find(
+  const cart = useSelector((store) => store.cart.products)?.find(
     (item) => item._id === product._id
   );
 
@@ -92,7 +92,7 @@ const DetailsSection = ({ product }) => {
 
   const increaseQuantity = () => {
     dispatch(
-      addToCartForNagivate(
+      addToCartForNavigate(
         product,
       )
     );

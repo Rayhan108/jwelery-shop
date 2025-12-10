@@ -1,12 +1,8 @@
 "use client";
 import React, { useRef, useState } from "react";
-import img from "../../../public/ring/bb.png";
-import Image from "next/image";
+;
 import ReviewTab from "./ReviewTab";
-import img1 from "../../../public/ring/img1.png";
-import img2 from "../../../public/ring/img2.png";
-import img3 from "../../../public/ring/img3.png";
-import img4 from "../../../public/ring/img4.png";
+
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import CardShop from "./CardShop";
@@ -17,48 +13,7 @@ const DetailsDescription = ({ product, id, similarProducts }) => {
   console.log('similar product', similarProducts);
   const { data: reviewData,refetch:reviewRefetch } = useGetReviewTotalQuery(id);
   const [activeTab, setActiveTab] = useState("description");
-  // const category = [
-  //   {
-  //     img: img1,
-  //     title: "Willow Diamond Engagement Ring",
-  //     price: "$20.00",
-  //   },
-  //   {
-  //     img: img2,
-  //     title: "Willow Diamond Engagement Ring",
-  //     price: "$20.00",
-  //   },
-  //   {
-  //     img: img3,
-  //     title: "Willow Diamond Engagement Ring",
-  //     price: "$20.00",
-  //   },
-  //   {
-  //     img: img4,
-  //     title: "Willow Diamond Engagement Ring",
-  //     price: "$20.00",
-  //   },
-  //   {
-  //     img: img1,
-  //     title: "Willow Diamond Engagement Ring",
-  //     price: "$20.00",
-  //   },
-  //   {
-  //     img: img2,
-  //     title: "Willow Diamond Engagement Ring",
-  //     price: "$20.00",
-  //   },
-  //   {
-  //     img: img3,
-  //     title: "Willow Diamond Engagement Ring",
-  //     price: "$20.00",
-  //   },
-  //   {
-  //     img: img4,
-  //     title: "Willow Diamond Engagement Ring",
-  //     price: "$20.00",
-  //   },
-  // ];
+
   const splideRef = useRef(null);
 
   const handlePrevClick = () => {

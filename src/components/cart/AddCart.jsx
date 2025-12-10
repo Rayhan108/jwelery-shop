@@ -4,34 +4,11 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, deleteOneProduct, removeFromCart, updateQuantity } from "../../redux/slices/cartSlice";
 
-// const products = [
-//   {
-//     id: 1,
-//     image: img1,
-//     name: "Willow Diamond Engagement Ring",
-//     price: 40,
-//     quantity: 2,
-//   },
-//   {
-//     id: 2,
-//     image: img2,
-//     name: "Solitaire Lab Diamond Pendant",
-//     price: 84,
-//     quantity: 2,
-//   },
-//   {
-//     id: 3,
-//     image: img3,
-//     name: "Paperclip Chain Bracelet",
-//     price: 78,
-//     quantity: 2,
-//   },
-// ];
 
 const AddCart = () => {
   const cart = useSelector((store) => store.cart.products);
   const totalPrice = useSelector((store) => store.cart.total);
-
+console.log("cart data--->",cart);
 
   // const totalPrice = cart.reduce((acc, item) => {
   //   const price = item.discount_price ? item.discount_price : item.price;
@@ -63,9 +40,29 @@ const AddCart = () => {
       )
     );
   };
-
+  //  Empty Cart Check
+  if (!cart || cart?.length === 0) {
+    return (
+      <div className="mt-16 flex flex-col items-center justify-center py-20">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🛒</div>
+          <h2 className="text-2xl font-semibold mb-2">Your cart is empty</h2>
+          <p className="text-gray-500 mb-6">
+            Looks like you haven't added anything to your cart yet.
+          </p>
+          <Link href="/shop">
+            <button className="bg-black text-white px-6 py-3 rounded-md cursor-pointer hover:bg-gray-800 transition-colors">
+              Continue Shopping
+            </button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
   return (
+
     <div className="mt-16">
+      
       <h2 className="text-lg font-semibold pb-4">Product</h2>
       <div className="lg:grid grid-cols-12 gap-8">
         <div className="col-span-8">
@@ -86,7 +83,7 @@ const AddCart = () => {
 
             <div>
               {
-                cart.length < 1 &&
+                cart?.length < 1 &&
                 <div className="text-center py-4">
                   <h2 className="text-lg font-semibold">Your cart is empty</h2>
                   <Link href="/shop">
@@ -99,25 +96,25 @@ const AddCart = () => {
             </div>
 
             <div>
-              {cart.map((item) => (
+              {cart?.map((item) => (
                 <div
-                  key={item._id}
+                  key={item?._id}
                   className="md:flex justify-between items-center border-b py-4"
                 >
                   <div className="md:flex items-center hidden">
                     <Image
-                      src={item.image_urls?.[0]}
+                      src={item?.image_urls?.[0]}
                       width={80}
                       height={80}
                       className="rounded"
-                      alt={item.name}
+                      alt={item?.name}
                     />
                   </div>
 
                   <div className="flex-1 px-4 hidden md:block">
-                    <p className="font-medium">{item.name}</p>
+                    <p className="font-medium">{item?.name}</p>
                     <p className="text-gray-500">
-                      {Number(item.discount_price || item.price).toLocaleString(
+                      {Number(item?.discount_price || item?.price).toLocaleString(
                         "en-US",
                         {
                           currency: "USD",
@@ -131,7 +128,7 @@ const AddCart = () => {
                     <div className="flex items-center">
                       <div className="flex items-center">
                         <Image
-                          src={item.image_urls?.[0]}
+                          src={item?.image_urls?.[0]}
                           width={80}
                           height={80}
                           className="rounded"
@@ -139,10 +136,10 @@ const AddCart = () => {
                         />
                       </div>
                       <div className="flex-1 px-4 md:hidden">
-                        <p className="font-medium">{item.name}</p>
+                        <p className="font-medium">{item?.name}</p>
                         <p className="text-gray-500">
                           {Number(
-                            item.discount_price || item.price
+                            item?.discount_price || item?.price
                           ).toLocaleString("en-US", {
                             currency: "USD",
                             style: "currency",
@@ -203,7 +200,7 @@ const AddCart = () => {
             <Link href={"/checkOut"}>
               {" "}
               {
-                cart.length > 0 && <button className="w-full cursor-pointer bg-black text-white py-2 mt-4">
+                cart?.length > 0 && <button className="w-full cursor-pointer bg-black text-white py-2 mt-4">
                   Check Out
                 </button>
               }

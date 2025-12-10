@@ -23,7 +23,7 @@ const Navbar = ({ pathname }) => {
   const { data: favorite } = useGetFavoritesQuery();
   console.log(favorite?.products)
   const cart = useSelector((state) => state.cart)
-  console.log(cart.products.length);
+  // console.log(cart.products.length);
 
   const { data: category } = useGetCategoryQuery();
   const { data: profile } = useGetProfileQuery();
@@ -183,7 +183,7 @@ const Navbar = ({ pathname }) => {
                   <Link href={"/myCart"} className="relative">
                     <IoBagHandleOutline size={20} />
                     {/* Display cart count only if there are items in the cart */}
-                    {cart.products.length > 0 && (
+                    {cart?.products?.length > 0 && (
                       <span className="absolute top-[-8px] right-[-8px] text-xs text-white bg-red-600 rounded-full px-[5px] py-[1px]">
                         {cart.products.length}
                       </span>
