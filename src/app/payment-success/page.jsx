@@ -15,7 +15,8 @@ const dispatch = useAppDispatch();
   }, [dispatch]);
 
     const goToOrderPage = () => {
-        router.push('/myOrder');
+        router.push('/shop');
+        // router.push('/myOrder');
     }
 
     return (
@@ -28,7 +29,7 @@ const dispatch = useAppDispatch();
                     onClick={goToOrderPage}
                     className="mt-6 w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none cursor-pointer"
                 >
-                    Go to Order Page
+                    Buy Again
                 </button>
             </div>
         </div>
