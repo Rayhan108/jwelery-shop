@@ -63,7 +63,7 @@ const cartSlice = createSlice({
 
     addToCart: (state, action) => {
       // Check if state is corrupted
-      if (Array.isArray(state)) {
+      if (Array.isArray(state)) {  
         return {
           products: [{ ...action.payload, quantity: 1, size: action.payload.size || null }],
           total: action.payload.discount_price || action.payload.price || 0,

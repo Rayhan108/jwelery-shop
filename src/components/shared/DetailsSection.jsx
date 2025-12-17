@@ -4,11 +4,7 @@ import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { MdStar, MdStarOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addToCartForNavigate,
-  updateColor,
-  updateSize,
-} from "../../redux/slices/cartSlice";
+import { addToCartForNavigate } from "../../redux/slices/cartSlice";
 import { useAddFavoriteMutation } from "@/redux/Api/webmanageApi";
 import { toast } from "react-toastify";
 import Link from "next/link";
@@ -19,7 +15,7 @@ const DetailsSection = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState("");
 
   const products = useSelector((store) => store.cart.products);
-  console.log("prod from cart", products);
+  console.log("prod ", product);
 
   const [addFavorite] = useAddFavoriteMutation();
   const savings =
@@ -38,9 +34,6 @@ const DetailsSection = ({ product }) => {
       : 0;
 
   const dispatch = useDispatch();
-  const cart = useSelector((store) => store.cart.products)?.find(
-    (item) => item._id === product._id
-  );
 
   // Check if product has colors and sizes
   const hasColors = product?.colors?.length > 0;
@@ -65,17 +58,20 @@ const DetailsSection = ({ product }) => {
     }
   };
 
+  // ✅ FIXED: Only update local state, don't dispatch to Redux
   const handleColor = (color) => {
     setSelectedColor(color);
-    dispatch(updateColor({ ...product, color }));
+    // ❌ REMOVED: dispatch(updateColor({ ...product, color }));
   };
 
+  // ✅ FIXED: Only update local state, don't dispatch to Redux
   const handleSize = (size) => {
     setSelectedSize(size);
-    dispatch(updateSize({ ...product, size }));
+    // ❌ REMOVED: dispatch(updateSize({ ...product, size }));
   };
 
-  const increaseQuantity = () => {
+  // ✅ Only add to cart when user clicks the button
+  const handleAddToCart = () => {
     if (isButtonDisabled) {
       if (!isColorSelected) {
         toast.warning("Please select a color");
@@ -85,11 +81,12 @@ const DetailsSection = ({ product }) => {
       }
       return;
     }
+    
     dispatch(
       addToCartForNavigate({
         ...product,
-        color: selectedColor,
-        size: selectedSize,
+        color: selectedColor || null,
+        size: selectedSize || null,
       })
     );
   };
@@ -151,7 +148,10 @@ const DetailsSection = ({ product }) => {
             <div className="flex items-center space-x-4 mb-4">
               <div>
                 <p className="font-semibold">
-                  Color {!selectedColor && <span className="text-red-500 text-sm">*</span>}
+                  Color{" "}
+                  {!selectedColor && (
+                    <span className="text-red-500 text-sm">*</span>
+                  )}
                 </p>
                 <div className="flex space-x-2">
                   {product?.colors?.map((color) => (
@@ -177,7 +177,10 @@ const DetailsSection = ({ product }) => {
             <div className="flex items-center space-x-4">
               <div>
                 <p className="font-semibold">
-                  Size {!selectedSize && <span className="text-red-500 text-sm">*</span>}
+                  Size{" "}
+                  {!selectedSize && (
+                    <span className="text-red-500 text-sm">*</span>
+                  )}
                 </p>
                 <div className="flex space-x-2">
                   {product?.sizes?.map((size) => (
@@ -212,20 +215,16 @@ const DetailsSection = ({ product }) => {
             <div className="w-full">
               {isButtonDisabled ? (
                 <button
-                  onClick={increaseQuantity}
+                  onClick={handleAddToCart}
                   disabled={isButtonDisabled}
-                  className={`w-full md:py-[11px] py-[7px] font-semibold transition-all ${
-                    isButtonDisabled
-                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                      : "bg-black text-white cursor-pointer hover:bg-gray-800"
-                  }`}
+                  className="w-full md:py-[11px] py-[7px] font-semibold transition-all bg-gray-300 text-gray-500 cursor-not-allowed"
                 >
                   Add To Cart
                 </button>
               ) : (
                 <Link href={`/myCart`}>
                   <button
-                    onClick={increaseQuantity}
+                    onClick={handleAddToCart}
                     className="w-full md:py-[11px] py-[7px] bg-black text-white font-semibold cursor-pointer hover:bg-gray-800 transition-all"
                   >
                     Add To Cart
