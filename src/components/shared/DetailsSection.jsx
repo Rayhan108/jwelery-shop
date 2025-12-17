@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { MdStar, MdStarOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,10 +14,14 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 
 const DetailsSection = ({ product }) => {
+  // Local state for selected color and size
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+
   const products = useSelector((store) => store.cart.products);
-  console.log('prod from cart',products);
-  // console.log('product from shop', product);
-  const [ addFavorite ] = useAddFavoriteMutation();
+  console.log("prod from cart", products);
+
+  const [addFavorite] = useAddFavoriteMutation();
   const savings =
     ((product?.price - product?.discount_price) / product?.price) * 100;
 
@@ -29,13 +34,22 @@ const DetailsSection = ({ product }) => {
   const averageRating =
     product.ratings.length > 0
       ? product.ratings.reduce((sum, rating) => sum + rating, 0) /
-      product.ratings.length
+        product.ratings.length
       : 0;
 
   const dispatch = useDispatch();
   const cart = useSelector((store) => store.cart.products)?.find(
     (item) => item._id === product._id
   );
+
+  // Check if product has colors and sizes
+  const hasColors = product?.colors?.length > 0;
+  const hasSizes = product?.sizes?.length > 0;
+
+  // Determine if button should be disabled
+  const isColorSelected = !hasColors || selectedColor !== "";
+  const isSizeSelected = !hasSizes || selectedSize !== "";
+  const isButtonDisabled = !isColorSelected || !isSizeSelected;
 
   const handleFavorite = async (record) => {
     console.log(record);
@@ -51,62 +65,35 @@ const DetailsSection = ({ product }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (cart) {
-  //     setSelectedColor(cart.color);
-  //     setSelectedSize(cart.size);
-  //   } else {
-  //     setSelectedColor(product.colors?.[0] || "");
-  //     setSelectedSize(product.sizes?.[0] || "");
-  //   }
-  // }, [cart, product]);
-
-  // useEffect(() => {
-  //   if (!cart) {
-  //     dispatch(updateColor({ ...product, color: selectedColor }));
-  //     dispatch(updateSize({ ...product, size: selectedSize }));
-  //   }
-  // }, [dispatch, product, selectedColor, selectedSize, cart]);
-
   const handleColor = (color) => {
+    setSelectedColor(color);
     dispatch(updateColor({ ...product, color }));
   };
 
   const handleSize = (size) => {
-    // setSelectedSize(size);
-    console.log(size);
+    setSelectedSize(size);
     dispatch(updateSize({ ...product, size }));
   };
 
-  // const quantity = cart?.quantity || 0;
-
-  // const handleAddToCart = () => {
-  //   if (cart && quantity) {
-  //     dispatch(removeFromCart(product));
-  //   } else {
-  //     dispatch(
-  //       addToCart({ ...product, color: selectedColor, size: selectedSize })
-  //     );
-  //   }
-  // };
-
   const increaseQuantity = () => {
+    if (isButtonDisabled) {
+      if (!isColorSelected) {
+        toast.warning("Please select a color");
+      }
+      if (!isSizeSelected) {
+        toast.warning("Please select a size");
+      }
+      return;
+    }
     dispatch(
-      addToCartForNavigate(
-        product,
-      )
+      addToCartForNavigate({
+        ...product,
+        color: selectedColor,
+        size: selectedSize,
+      })
     );
   };
 
-  // if(!cart.size){
-  //   return message.success('Please select a size');
-  // }
-  // const decreaseQuantity = () =>
-  //   dispatch(
-  //     removeFromCart(
-  //       product,
-  //     )
-  //   );
   return (
     <div className=" w-[300px]">
       <div>
@@ -159,73 +146,97 @@ const DetailsSection = ({ product }) => {
         </div>
         <p className="text-gray-600">{product?.details}</p>
         <div>
-          <div className=" flex items-center space-x-4 mb-4">
-            <div>
-              <p className="font-semibold">Color</p>
-              <div className="flex space-x-2">
-                {product?.colors?.map((color) => (
-                  <button
-                    onClick={() => handleColor(color)}
-                    key={color}
-                    className={`cursor-pointer md:px-4 px-2 md:py-2 py-1 border text-sm hover:bg-gray-200 ${cart?.color === color && "bg-gray-200"
+          {/* Color Selector */}
+          {hasColors && (
+            <div className="flex items-center space-x-4 mb-4">
+              <div>
+                <p className="font-semibold">
+                  Color {!selectedColor && <span className="text-red-500 text-sm">*</span>}
+                </p>
+                <div className="flex space-x-2">
+                  {product?.colors?.map((color) => (
+                    <button
+                      onClick={() => handleColor(color)}
+                      key={color}
+                      className={`cursor-pointer md:px-4 px-2 md:py-2 py-1 border text-sm hover:bg-gray-200 transition-all ${
+                        selectedColor === color
+                          ? "bg-black text-white border-black"
+                          : "bg-white"
                       }`}
-                  >
-                    {color}
-                  </button>
-                ))}
+                    >
+                      {color}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
           {/* Size Selector */}
-          <div className=" flex items-center space-x-4">
-            <div>
-              <p className="font-semibold">Size</p>
-              <div className="flex space-x-2">
-                {product?.sizes?.map((size) => (
-                  <button
-                    onClick={() => handleSize(size)}
-                    key={size}
-                    className={`cursor-pointer md:px-4 px-2 md:py-2 py-1 border text-sm hover:bg-gray-200 ${cart?.size === size && "bg-gray-200"
+          {hasSizes && (
+            <div className="flex items-center space-x-4">
+              <div>
+                <p className="font-semibold">
+                  Size {!selectedSize && <span className="text-red-500 text-sm">*</span>}
+                </p>
+                <div className="flex space-x-2">
+                  {product?.sizes?.map((size) => (
+                    <button
+                      onClick={() => handleSize(size)}
+                      key={size}
+                      className={`cursor-pointer md:px-4 px-2 md:py-2 py-1 border text-sm hover:bg-gray-200 transition-all ${
+                        selectedSize === size
+                          ? "bg-black text-white border-black"
+                          : "bg-white"
                       }`}
-                  >
-                    {size}
-                  </button>
-                ))}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Validation Message */}
+          {isButtonDisabled && (hasColors || hasSizes) && (
+            <p className="text-red-500 text-sm mt-3">
+              * Please select {!isColorSelected && "color"}
+              {!isColorSelected && !isSizeSelected && " and "}
+              {!isSizeSelected && "size"} to continue
+            </p>
+          )}
 
           <div className="flex md:gap-4 gap-2 my-5">
-            {/* <div className=" flex items-center space-x-4">
-              <div className="flex items-center space-x-4 border py-1 md:py-2">
-                <button
-                  className="md:w-11 w-8 border-r  text-lg cursor-pointer"
-                  onClick={decreaseQuantity}
-                >
-                  -
-                </button>
-                <p className="md:px-4 px-2 ">{quantity}</p>
-                <button
-                  className="md:w-11 w-8 border-l text-lg cursor-pointer"
-                  onClick={increaseQuantity}
-                >
-                  +
-                </button>
-              </div>
-            </div> */}
-
             {/* Add to Cart Button */}
-            <div className=" w-full">
-              <Link href={`/myCart`}>
+            <div className="w-full">
+              {isButtonDisabled ? (
                 <button
                   onClick={increaseQuantity}
-                  className={`w-full md:py-[11px] py-[7px] bg-black text-white font-semibold cursor-pointer`}
+                  disabled={isButtonDisabled}
+                  className={`w-full md:py-[11px] py-[7px] font-semibold transition-all ${
+                    isButtonDisabled
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-black text-white cursor-pointer hover:bg-gray-800"
+                  }`}
                 >
-                  {"Add To Cart"}
+                  Add To Cart
                 </button>
-              </Link>
+              ) : (
+                <Link href={`/myCart`}>
+                  <button
+                    onClick={increaseQuantity}
+                    className="w-full md:py-[11px] py-[7px] bg-black text-white font-semibold cursor-pointer hover:bg-gray-800 transition-all"
+                  >
+                    Add To Cart
+                  </button>
+                </Link>
+              )}
             </div>
-            <button onClick={() => handleFavorite(product?._id)} className="border px-4 text-2xl cursor-pointer">
+            <button
+              onClick={() => handleFavorite(product?._id)}
+              className="border px-4 text-2xl cursor-pointer hover:bg-gray-100 transition-all"
+            >
               <FaRegHeart />
             </button>
           </div>
